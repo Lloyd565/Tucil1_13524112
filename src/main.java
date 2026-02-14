@@ -1,5 +1,4 @@
 package src;
-import java.lang.reflect.Array;
 import java.util.*;
 
 class Pos {
@@ -16,7 +15,7 @@ public class main {
         System.out.print("Masukkan ukuran papan : ");
         int n = sc.nextInt();
         sc.nextLine();
-        char[][] grid = new char[n][n];
+        char[][] papan = new char[n][n];
         List<Pos>[] pos_Warna = new ArrayList[26];
         for (int i = 0; i < 26; i++) {
             pos_Warna[i] = new ArrayList<>();
@@ -33,29 +32,26 @@ public class main {
 
             for (int j = 0; j < n; j++) {
                 char ch = row.charAt(j);
-
                 if (ch < 'A' || ch > 'Z') {
                     System.out.println("Ada input warna tidak valid");
                     return;
                 }
-
-                grid[i][j] = ch;
-
+                papan[i][j] = ch;
                 int idx = ch - 'A';
                 pos_Warna[idx].add(new Pos(i, j));
             }
         }
 
-        System.out.println("\nIsi tiap region:");
-        for (int i = 0; i < 26; i++) {
-            if (!pos_Warna[i].isEmpty()) {
-                char region = (char) ('A' + i);
-                System.out.print(region + ": ");
-                for (Pos p : pos_Warna[i]) {
-                    System.out.print("(" + p.r + "," + p.c + ") ");
-                }
-                System.out.println();
-            }
-        }
+        // System.out.println("\nIsi tiap region warna:");
+        // for (int i = 0; i < 26; i++) {
+        //     if (!pos_Warna[i].isEmpty()) {
+        //         char region = (char) ('A' + i);
+        //         System.out.print(region + ": ");
+        //         for (Pos p : pos_Warna[i]) {
+        //             System.out.print("(" + p.r + "," + p.c + ") ");
+        //         }
+        //         System.out.println();
+        //     }
+        // }
     }
 }
