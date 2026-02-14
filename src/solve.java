@@ -1,11 +1,7 @@
 package src;
-import java.util.Scanner;
 
 public class solve {
-    public static boolean CheckPosition() {
+    public static boolean CekPos(int [][]papan) {
         return false;
-    }
-    
-    
+    }   
 }
-
