@@ -15,9 +15,11 @@ public class GUI extends JFrame {
     private JLabel iterLabel;
     private JButton solveBtn;
     private JButton loadBtn;
+    private JButton saveBtn;
     private int n;
     private char[][] papan;
     private List<Pos>[] list_Warna;
+    private boolean[][] currentSolutionQueens;
 
     static final Color[] REGION_COLORS = {
         new Color(231, 76, 60),    // A
@@ -120,6 +122,17 @@ public class GUI extends JFrame {
         solveBtn.setEnabled(false);
         solveBtn.addActionListener(e -> solvePapan());
         sidebar.add(solveBtn);
+        sidebar.add(Box.createVerticalStrut(10));
+
+        saveBtn = new JButton("Simpan Solusi");
+        saveBtn.setFont(new Font("SansSerif", Font.BOLD, 14));
+        saveBtn.setForeground(new Color(46, 204, 113));
+        saveBtn.setFocusPainted(false);
+        saveBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        saveBtn.setMaximumSize(new Dimension(300, 40));
+        saveBtn.setEnabled(false);
+        saveBtn.addActionListener(e -> saveSolution());
+        sidebar.add(saveBtn);
 
         sidebar.add(Box.createVerticalStrut(30));
 
@@ -283,9 +296,37 @@ public class GUI extends JFrame {
         }
     }
 
+    private void saveSolution() {
+        if (currentSolutionQueens == null) return;
+        
+        String inputName = JOptionPane.showInputDialog(this, "Masukkan nama file :", "Simpan Solusi", JOptionPane.QUESTION_MESSAGE);
+        if (inputName == null || inputName.trim().isEmpty()) return;
+        if (!inputName.endsWith(".txt")) {
+            inputName += ".txt";
+        }
+        File file = new File("test/" + inputName);
+        try (PrintWriter writer = new PrintWriter(file)) {
+            for (int i = 0; i < n; i++) {
+                StringBuilder line = new StringBuilder();
+                for (int j = 0; j < n; j++) {
+                    if (currentSolutionQueens[i][j]) {
+                        line.append('#');
+                    } else {
+                        line.append(papan[i][j]);
+                    }
+                }
+                writer.println(line.toString());
+            }
+            JOptionPane.showMessageDialog(this, "Solusi berhasil disimpan di " + file.getPath());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Gagal menyimpan file: " + ex.getMessage());
+        }
+    }
+
     private void solvePapan() {
         solveBtn.setEnabled(false);
         loadBtn.setEnabled(false);
+        saveBtn.setEnabled(false);
         algoCombo.setEnabled(false);
         statusLabel.setText("Mencari solusi...");
         statusLabel.setForeground(new Color(243, 156, 18));
@@ -351,6 +392,15 @@ public class GUI extends JFrame {
                             String.format("%,d", solver.getI()) + " iterasi)");
                         statusLabel.setForeground(new Color(46, 204, 113));
                         iterLabel.setText("Iterasi: " + String.format("%,d", solver.getI()));
+                        currentSolutionQueens = new boolean[n][n];
+                        for(int i=0; i<solver.akt.size(); i++) {
+                            char warna = solver.akt.get(i);
+                            int idx = warna - 'A';
+                            int posIdx = solver.best[i];
+                            Pos p = lwCopy[idx].get(posIdx);
+                            currentSolutionQueens[p.r][p.c] = true;
+                        }
+                        saveBtn.setEnabled(true);
                     } else {
                         statusLabel.setText("Tidak ada solusi (" + elapsed + " ms)");
                         statusLabel.setForeground(new Color(231, 76, 60));
@@ -421,6 +471,14 @@ public class GUI extends JFrame {
                             String.format("%,d", solver.getIter()) + " iterasi)");
                         statusLabel.setForeground(new Color(46, 204, 113));
                         iterLabel.setText("Iterasi: " + String.format("%,d", solver.getIter()));
+                        
+                        currentSolutionQueens = new boolean[n][n];
+                        int[] sol = solver.getSolusi();
+                        for (int col = 0; col < n; col++) {
+                            int row = sol[col];
+                            currentSolutionQueens[row][col] = true;
+                        }
+                        saveBtn.setEnabled(true);
                     } else {
                         statusLabel.setText("Tidak ada solusi (" + elapsed + " ms)");
                         statusLabel.setForeground(new Color(231, 76, 60));
