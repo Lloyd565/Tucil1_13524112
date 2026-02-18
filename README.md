@@ -1,9 +1,9 @@
 # Tucil 1 Stima (Queens Solver)
 
 ## Penjelasan Singkat
-Program ini adalah aplikasi GUI (Graphical User Interface) untuk menyelesaikan persoalan Queens pada papan berukuran N x N. Program ini mendukung dua varian algoritma Brute Force untuk mencari solusi penempatan ratu agar tidak saling menyerang:
-1. **Brute Force Optimal**: Mencari solusi dengan pendekatan yang lebih optimal dalam menelusuri ruang pencarian.
-2. **Brute Force Murni**: Mencari solusi dengan mencoba seluruh kemungkinan posisi ratu secara naif.
+Program ini adalah aplikasi GUI (Graphical User Interface) untuk menyelesaikan persoalan Queens pada papan berukuran N x N. Program ini mendukung dua varian algoritma Brute Force untuk mencari solusi penempatan queen:
+1. **Brute Force Optimal**
+2. **Brute Force Murni**
 
 Aplikasi ini menampilkan visualisasi papan dengan pewarnaan region (jika relevan dengan format input) dan proses penempatan ratu secara real-time. Program dibangun menggunakan bahasa pemrograman Java dan pustaka Swing.
 
